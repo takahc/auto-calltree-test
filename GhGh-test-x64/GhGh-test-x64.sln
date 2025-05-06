@@ -10,6 +10,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GhGh-test-x64", "GhGh-test-
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PenterPexitx64", "..\PenterPexitx64\PenterPexitx64.vcxproj", "{05208EFD-6D1A-4E5F-9DDB-9110D6BE3E9E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleCProgram", "..\SampleCProgram\SampleCProgram.vcxproj", "{EB34A3B3-7229-45C0-8CC3-9F1D6BB46AE9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{05208EFD-6D1A-4E5F-9DDB-9110D6BE3E9E} = {05208EFD-6D1A-4E5F-9DDB-9110D6BE3E9E}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -34,6 +39,14 @@ Global
 		{05208EFD-6D1A-4E5F-9DDB-9110D6BE3E9E}.Release|x64.Build.0 = Release|x64
 		{05208EFD-6D1A-4E5F-9DDB-9110D6BE3E9E}.Release|x86.ActiveCfg = Release|Win32
 		{05208EFD-6D1A-4E5F-9DDB-9110D6BE3E9E}.Release|x86.Build.0 = Release|Win32
+		{EB34A3B3-7229-45C0-8CC3-9F1D6BB46AE9}.Debug|x64.ActiveCfg = Debug|x64
+		{EB34A3B3-7229-45C0-8CC3-9F1D6BB46AE9}.Debug|x64.Build.0 = Debug|x64
+		{EB34A3B3-7229-45C0-8CC3-9F1D6BB46AE9}.Debug|x86.ActiveCfg = Debug|Win32
+		{EB34A3B3-7229-45C0-8CC3-9F1D6BB46AE9}.Debug|x86.Build.0 = Debug|Win32
+		{EB34A3B3-7229-45C0-8CC3-9F1D6BB46AE9}.Release|x64.ActiveCfg = Release|x64
+		{EB34A3B3-7229-45C0-8CC3-9F1D6BB46AE9}.Release|x64.Build.0 = Release|x64
+		{EB34A3B3-7229-45C0-8CC3-9F1D6BB46AE9}.Release|x86.ActiveCfg = Release|Win32
+		{EB34A3B3-7229-45C0-8CC3-9F1D6BB46AE9}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

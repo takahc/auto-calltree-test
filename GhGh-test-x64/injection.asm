@@ -27,8 +27,9 @@ endm
 _penter	proc
 	PUSHREGS
 
-	mov	rcx, rsp
-	mov	rdx, qword ptr [rsp + 28h]
+	mov	rcx, qword ptr [rsp + 28h]
+	mov	rdx, rbp
+	mov	r8, rsp
 	call enterFunction
 
 	POPREGS

@@ -9,27 +9,26 @@
 extern "C" void _penter();
 extern "C" void _pexit();
 
+extern int indent;
+
 
 
 void testFunctionA() {
     //std::cout << "Inside testFunctionA" << std::endl;
-    printf("Inside testFunctionA\n");
+    indentPrint("Inside testFunctionA\n");
 }
 
 void testFunctionB() {
     //std::cout << "Inside testFunctionB" << std::endl;
-    printf("Inside testFunctionB\n");
+    indentPrint("Inside testFunctionB\n");
     testFunctionA();
 }
 
 int main()
 {
-    printf("Hello World!\n");
+    indentPrint("Hello World!\n");
 
-    void *rbp = NULL;
-    void *return_address = NULL;
-    enterFunction(rbp, return_address);
-
+    testFunctionB();
     testFunctionB();
 
 }

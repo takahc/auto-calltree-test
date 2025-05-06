@@ -11,6 +11,12 @@ extern "C" void enterFunction(void* returnAddress);
 extern "C" void exitFunction();
 void getFunctionNameFromAddress(void* address);
 
+typedef void(__stdcall* HelloFunc)();
+typedef void(__stdcall* ByeFunc)();
+HelloFunc hello;
+ByeFunc bye;
+
+
 // スレッドローカル変数で再帰防止フラグを管理
 thread_local bool isInPenter = false;
 thread_local bool isInPexit = false;
@@ -33,9 +39,10 @@ extern "C" void __declspec(naked) _penter() {
         push eax
     }
 
-    if (!isInPenter) {
+    if (!isInPenter && hello != nullptr) {
         isInPenter = true;
         __asm {
+            call hello
             call enterFunction
         }
         isInPenter = false;
@@ -49,14 +56,31 @@ extern "C" void __declspec(naked) _penter() {
 }
 
 extern "C" void __declspec(naked) _pexit() {
-    if(!isInPexit) {
-		isInPexit = true;
+
+    if (bye != nullptr) {
         __asm {
-            call exitFunction
+            call bye
             ret
         }
-        isInPexit = false;
     }
+    else {
+        __asm {
+            ret
+        }
+    }
+    //if (!isInPexit) {
+    //    isInPexit = true;
+    //    __asm {
+    //        //call exitFunction
+    //        ret
+    //    }
+    //    isInPexit = false;
+    //}
+    //else {
+    //    __asm {
+    //        ret
+    //    }
+    //}
 }
 
 void enterFunction(void* returnAddress) {
@@ -77,7 +101,7 @@ void enterFunction(void* returnAddress) {
 }
 
 void exitFunction() {
-    if (!isInPexit) {
+    if (!isInPexit && bye != nullptr) {
         isInPexit = true;
         indent--;
         isInPexit = false;
@@ -98,8 +122,8 @@ void getFunctionNameFromAddress(void* address) {
     //SymInitialize(process, NULL, TRUE);
 
     if (SymFromAddr(process, (DWORD64)address, 0, symbol)) {
-        for(int i=0; i<indent; i++)
-			printf("  ");
+        for (int i = 0; i < indent; i++)
+            printf("  ");
         printf("get %s\n", symbol->Name);
         //return symbol->Name;
     }
@@ -126,11 +150,41 @@ void testFunctionB() {
     testFunctionA();
 }
 
+//int main() {
+//    HANDLE process = GetCurrentProcess();
+//    SymInitialize(process, NULL, TRUE);
+//
+//    testFunctionB();
+//    //printCallTree(root);
+//    return 0;
+//}
+
+
 int main() {
-    HANDLE process = GetCurrentProcess();
-    SymInitialize(process, NULL, TRUE);
+    HMODULE dll = LoadLibraryA("PenterPexit.dll");
+    //HMODULE dll = GetModuleHandle(TEXT("PenterPexit.dll"));
+    if (!dll) {
+        std::cerr << "DLL 読み込み失敗" << std::endl;
+        return 1;
+    }
+
+    hello = (HelloFunc)GetProcAddress(dll, "helloFromDll");
+    if (!hello) {
+        std::cerr << "hello関数取得失敗" << std::endl;
+        return 1;
+    }
+
+    bye = (HelloFunc)GetProcAddress(dll, "byeFromDll");
+    if (!hello) {
+        std::cerr << "bye関数取得失敗" << std::endl;
+        return 1;
+    }
 
     testFunctionB();
-    //printCallTree(root);
+    
+    //__asm {
+    //    call hello
+    //}
+
     return 0;
 }
